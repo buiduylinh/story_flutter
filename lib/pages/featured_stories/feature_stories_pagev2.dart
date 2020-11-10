@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:truyenthieunhi/CustomAppbar.dart';
 import 'package:truyenthieunhi/generated/r.dart';
 import 'package:truyenthieunhi/pages/featured_stories/models/Addition.dart';
 import 'package:truyenthieunhi/pages/featured_stories/models/Link.dart';
@@ -18,41 +19,13 @@ final List<String> imgList = [
 final List<Widget> imageSliders = imgList
     .map((item) => Container(
           child: Container(
-            margin: EdgeInsets.all(5.0),
+            margin: EdgeInsets.all(20),
             child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 child: Stack(
-                  children: <Widget>[
-                    Image.asset(item, fit: BoxFit.cover, width: 1000.0),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(200, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        child: Text(
-                          'No. ${imgList.indexOf(item)} image',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
+              children: <Widget>[
+                Image.asset(item, fit: BoxFit.cover, width: 1000.0),
+              ],
+            )),
           ),
         ))
     .toList();
@@ -74,7 +47,6 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
         items: imageSliders,
         options: CarouselOptions(
             autoPlay: true,
-            height: 200,
             viewportFraction: 1.0,
             enlargeCenterPage: false,
             aspectRatio: 2.0,
@@ -173,9 +145,36 @@ class FeatureStoriesPageV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _initList();
-    return Scaffold(
-        body: ListView.builder(
-            itemCount: list.length, itemBuilder: _buildItemView));
+    return SafeArea(
+      child: Scaffold(
+          appBar: CustomAppbar(
+              child: Row(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(left: 20, right: 5),
+                  child: Image.asset(R.img_menu)),
+              Expanded(
+                child: Container(
+                    child: FlatButton.icon(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          color: Colors.blue,
+                          width: 1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(20)),
+                  onPressed: () {},
+                  label: Text("Tìm Kiếm Truyện"),
+                  icon: Image.asset(R.img_search),
+                )),
+              ),
+              Container(
+                  margin: EdgeInsets.only(left: 5, right: 20),
+                  child: Image.asset(R.img_vip))
+            ],
+          )),
+          body: ListView.builder(
+              itemCount: list.length, itemBuilder: _buildItemView)),
+    );
   }
 
   Widget _buildItemView(BuildContext context, int index) {
