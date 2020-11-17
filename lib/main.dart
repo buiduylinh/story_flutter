@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:truyenthieunhi/pages/featured_stories/feature_stories_page.dart';
 import 'package:truyenthieunhi/pages/featured_stories/feature_stories_pagev2.dart';
+import 'package:truyenthieunhi/pages/sample/LoginPage.dart';
+import 'package:truyenthieunhi/pages/sample/LoginProvider.dart';
+import 'package:truyenthieunhi/pages/sample/SamplePage.dart';
+import 'package:truyenthieunhi/pages/sample/SampleProvider.dart';
+import 'package:truyenthieunhi/pages/sample/bloc/BLoCPage.dart';
+import 'package:truyenthieunhi/pages/sample/bloc/user_bloc.dart';
 import 'pages/first/firstpage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => LoginProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FeatureStoriesPageV2(),
+      home: LoginPage(),
     );
   }
 }
