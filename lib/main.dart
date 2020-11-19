@@ -9,6 +9,7 @@ import 'package:truyenthieunhi/pages/sample/SamplePage.dart';
 import 'package:truyenthieunhi/pages/sample/SampleProvider.dart';
 import 'package:truyenthieunhi/pages/sample/bloc/BLoCPage.dart';
 import 'package:truyenthieunhi/pages/sample/bloc/user_bloc.dart';
+import 'package:truyenthieunhi/pages/sample/json/json_page.dart';
 import 'pages/first/firstpage.dart';
 
 void main() {
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      home: JsonPage(),
     );
   }
 }
