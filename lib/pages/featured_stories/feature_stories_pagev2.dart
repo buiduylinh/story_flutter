@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:truyenthieunhi/CustomAppbar.dart';
@@ -6,8 +7,10 @@ import 'package:truyenthieunhi/pages/featured_stories/models/Addition.dart';
 import 'package:truyenthieunhi/pages/featured_stories/models/Link.dart';
 import 'package:truyenthieunhi/pages/featured_stories/models/Slide.dart';
 import 'package:truyenthieunhi/pages/featured_stories/models/Story.dart';
+import 'package:truyenthieunhi/pages/featured_stories/models/StoryResponse.dart';
 import 'package:truyenthieunhi/pages/featured_stories/models/Title.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:truyenthieunhi/pages/http.dart';
 
 final List<String> imgList = [
   R.img_slide1,
@@ -77,50 +80,33 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   }
 }
 
-class FeatureStoriesPageV2 extends StatelessWidget {
+class FeatureStoriesPageV2 extends StatefulWidget {
+  @override
+  _FeatureStoriesPageV2State createState() => _FeatureStoriesPageV2State();
+}
+
+class _FeatureStoriesPageV2State extends State<FeatureStoriesPageV2> {
   List list = List();
+
   List<String> listImage = List();
 
-  _initList() {
+  _initList() async {
+    Response response = await Http.instance.getListStore();
+
     Slide slide = Slide();
     list.add(slide);
 
-    StoryTitle title = StoryTitle("Truyện nổi bật");
-    list.add(title);
+    Store store = Store.fromJson(response.data);
 
-    Story story =
-        Story(1, "", "Thánh Gióng - Truyện cổ tích...", "Truyện Kiều", 1511);
-    list.add(story);
-
-    Story story1 =
-        Story(2, "", "Thánh Gióng - Truyện cổ tích...", "Truyện Kiều", 1511);
-    list.add(story1);
-
-    Story story2 =
-        Story(3, "", "Thánh Gióng - Truyện cổ tích...", "Truyện Kiều", 1511);
-    list.add(story2);
-
-    Addition addition = Addition();
-    list.add(addition);
-
-    StoryTitle title2 = StoryTitle("Truyện mới nhất");
-    list.add(title2);
-
-    Story story3 = Story(
-        1, "", "Thánh Gióng - Truyện cổ tích...", "Truyện Kiều", 1511, true);
-    list.add(story3);
-
-    Story story4 = Story(
-        2,
-        "",
-        "Thánh Gióng - Truyện cổ tích cua hung ochoa hihihihihihihihiih",
-        "Truyện Kiều",
-        1511);
-    list.add(story4);
-
-    Story story5 =
-        Story(3, "", "Thánh Gióng - Truyện cổ tích...", "Truyện Kiều", 1511);
-    list.add(story5);
+    for (int i = 0; i < store.data.length; i++) {
+      StoryTitle title = StoryTitle(store.data[i].title);
+      list.add(title);
+      for (int j = 0; j < store.data[i].categoryList.length; j++) {
+        CategoryList categoryList = store.data[i].categoryList[j];
+        Story story = Story(categoryList.id, "", categoryList.title??"", "Truyện Kiều", categoryList.viewTotal);
+        list.add(story);
+      }
+    }
 
     Addition addition1 = Addition();
     list.add(addition1);
@@ -140,11 +126,20 @@ class FeatureStoriesPageV2 extends StatelessWidget {
     listImage.add(R.img_slide2);
     listImage.add(R.img_slide3);
     listImage.add(R.img_slide4);
+
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initList();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initList();
     return SafeArea(
       child: Scaffold(
           appBar: CustomAppbar(
